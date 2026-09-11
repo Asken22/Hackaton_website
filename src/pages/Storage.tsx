@@ -1,5 +1,4 @@
-import { MapPin, Phone, Warehouse, Ruler, ThermometerSnowflake, ShieldCheck, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { MapPin, Phone, Warehouse, Ruler, ThermometerSnowflake, ShieldCheck } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import warehouse1Img from "@/assets/warehouse_1.jpg"
 import warehouse2Img from "@/assets/warehouse_2.jpg"

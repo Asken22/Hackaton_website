@@ -42,7 +42,7 @@ const initialOffers = [
 export function Offers() {
   const [offers, setOffers] = useState(initialOffers)
 
-  const handleAction = (id: number, action: 'accept' | 'reject') => {
+  const handleAction = (id: number, _action: 'accept' | 'reject') => {
     // In a real app, this would trigger an API call
     setOffers(offers.filter(offer => offer.id !== id))
   }

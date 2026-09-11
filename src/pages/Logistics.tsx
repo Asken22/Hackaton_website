@@ -1,4 +1,4 @@
-import { MapPin, Phone, Truck, ArrowRight, Download, Building, Users, BadgeCheck } from "lucide-react"
+import { MapPin, Phone, Truck, Download, Building, Users, BadgeCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 

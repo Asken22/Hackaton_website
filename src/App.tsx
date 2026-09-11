@@ -13,8 +13,6 @@ import { Support } from "./pages/Support"
 import { Transactions } from "./pages/Transactions"
 import { LotCreation } from "./pages/LotCreation"
 
-// Placeholder pages to be implemented
-const Placeholder = ({ title }: { title: string }) => <div className="p-10 text-2xl font-bold">{title}</div>
 
 function App() {
   return (
