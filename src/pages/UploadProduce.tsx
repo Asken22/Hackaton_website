@@ -1,114 +1,157 @@
 import { useState } from "react"
-import { Upload, Calendar, IndianRupee, ShieldCheck } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useNavigate } from "react-router-dom"
+import { PackagePlus, ImagePlus, Loader2 } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { mockDB } from "@/lib/mockDatabase"
+import { useUser } from "@/contexts/UserContext"
 
 export function UploadProduce() {
   const navigate = useNavigate()
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { userId, userName } = useUser()
+  const [loading, setLoading] = useState(false)
+  
+  const [formData, setFormData] = useState({
+    crop: '',
+    quantity: '',
+    expectedPrice: '',
+    harvestDate: '',
+    description: '',
+    location: 'Karnal, Haryana', // Default for demo
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
+    setLoading(true)
+
     setTimeout(() => {
-      setIsSubmitting(false)
-      navigate("/listings")
-    }, 1500)
+      mockDB.addListing({
+        id: `lst_${Date.now()}`,
+        farmerId: userId,
+        farmerName: userName,
+        crop: formData.crop,
+        quantity: Number(formData.quantity),
+        expectedPrice: Number(formData.expectedPrice),
+        harvestDate: formData.harvestDate,
+        description: formData.description,
+        location: formData.location,
+        images: [], // Mocking images for now
+        verificationStatus: 'None',
+        createdAt: new Date().toISOString()
+      })
+      setLoading(false)
+      navigate('/farmer/listings')
+    }, 800)
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Upload Produce</h1>
-        <p className="text-muted-foreground">List your crop on the marketplace for buyers to see.</p>
+    <div className="max-w-3xl mx-auto pb-10 space-y-6">
+      <div className="space-y-2">
+        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Create Listing</h1>
+        <p className="text-muted-foreground text-lg">List your produce directly to verified buyers.</p>
       </div>
 
-      <Card className="glass">
+      <Card>
         <CardHeader>
-          <CardTitle>Produce Details</CardTitle>
-          <CardDescription>Enter the specifications of your harvest.</CardDescription>
+          <CardTitle className="flex items-center gap-2">
+            <PackagePlus className="h-5 w-5 text-green-600" />
+            Produce Details
+          </CardTitle>
+          <CardDescription>Enter the specifics of your harvest.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium leading-none">Crop</label>
-                <select className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                  <option>Wheat</option>
-                  <option>Rice (Paddy)</option>
-                  <option>Maize</option>
-                  <option>Cotton</option>
-                  <option>Soybean</option>
+                <label className="text-sm font-medium">Crop Type</label>
+                <select 
+                  name="crop" 
+                  required 
+                  value={formData.crop} 
+                  onChange={handleChange}
+                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-green-500"
+                >
+                  <option value="">Select a crop</option>
+                  <option value="Basmati Rice">Basmati Rice</option>
+                  <option value="Wheat (Lokwan)">Wheat (Lokwan)</option>
+                  <option value="Soybean">Soybean</option>
+                  <option value="Maize">Maize</option>
                 </select>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium leading-none">Variety</label>
-                <input required type="text" placeholder="e.g. Sharbati" className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
-              </div>
-            </div>
 
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium leading-none">Quantity (in Quintals)</label>
-                <div className="relative">
-                  <input required type="number" min="1" placeholder="0" className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
-                </div>
+                <label className="text-sm font-medium">Available Quantity (Quintals)</label>
+                <input 
+                  type="number" 
+                  name="quantity" 
+                  required 
+                  min="1"
+                  placeholder="e.g. 50"
+                  value={formData.quantity} 
+                  onChange={handleChange}
+                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-green-500"
+                />
               </div>
+
               <div className="space-y-2">
-                <label className="text-sm font-medium leading-none">Expected Price (per Quintal)</label>
-                <div className="relative">
-                  <IndianRupee className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <input required type="number" min="1" placeholder="0" className="w-full rounded-md border border-input bg-background pl-9 pr-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
-                </div>
+                <label className="text-sm font-medium">Expected Price (₹ per Quintal)</label>
+                <input 
+                  type="number" 
+                  name="expectedPrice" 
+                  required 
+                  min="100"
+                  placeholder="e.g. 3200"
+                  value={formData.expectedPrice} 
+                  onChange={handleChange}
+                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-green-500"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Harvest Date</label>
+                <input 
+                  type="date" 
+                  name="harvestDate" 
+                  required 
+                  value={formData.harvestDate} 
+                  onChange={handleChange}
+                  className="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-green-500"
+                />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium leading-none">Harvest Date</label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                <input required type="date" className="w-full rounded-md border border-input bg-background pl-9 pr-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" />
-              </div>
+              <label className="text-sm font-medium">Description & Quality Details</label>
+              <textarea 
+                name="description" 
+                rows={3} 
+                required 
+                placeholder="Mention any specific quality parameters (moisture content, grain size, etc.)"
+                value={formData.description} 
+                onChange={handleChange}
+                className="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-green-500"
+              />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium leading-none">Quality Verification</label>
-              <div className="grid grid-cols-3 gap-4">
-                <label className="flex flex-col items-center justify-center p-4 border rounded-md cursor-pointer hover:bg-muted bg-green-50/50 border-green-200">
-                  <input type="radio" name="quality" value="self" className="sr-only" defaultChecked />
-                  <span className="font-medium">Self Declared</span>
-                  <span className="text-xs text-muted-foreground">No verification</span>
-                </label>
-                <label className="flex flex-col items-center justify-center p-4 border rounded-md cursor-pointer hover:bg-muted relative">
-                  <input type="radio" name="quality" value="fpo" className="sr-only" />
-                  <ShieldCheck className="absolute top-2 right-2 h-4 w-4 text-blue-500" />
-                  <span className="font-medium">FPO Verified</span>
-                  <span className="text-xs text-muted-foreground">Certified by FPO</span>
-                </label>
-                <label className="flex flex-col items-center justify-center p-4 border rounded-md cursor-pointer hover:bg-muted relative">
-                  <input type="radio" name="quality" value="lab" className="sr-only" />
-                  <ShieldCheck className="absolute top-2 right-2 h-4 w-4 text-green-500" />
-                  <span className="font-medium">Lab Certified</span>
-                  <span className="text-xs text-muted-foreground">NABL Grade A</span>
-                </label>
+              <label className="text-sm font-medium">Upload Images (Optional)</label>
+              <div className="border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center text-gray-500 hover:bg-gray-50 cursor-pointer transition-colors">
+                <ImagePlus className="h-8 w-8 mb-2 text-gray-400" />
+                <p className="text-sm">Click to upload photos of your produce</p>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium leading-none">Upload Images</label>
-              <div className="border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-muted/50 transition-colors">
-                <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
-                  <Upload className="h-6 w-6 text-green-600" />
-                </div>
-                <p className="font-medium mb-1">Click to upload or drag and drop</p>
-                <p className="text-xs text-muted-foreground">SVG, PNG, JPG or GIF (max. 5MB)</p>
-              </div>
+            <div className="pt-4 border-t flex justify-end gap-4">
+              <Button type="button" variant="outline" onClick={() => navigate(-1)}>Cancel</Button>
+              <Button type="submit" disabled={loading} className="bg-green-700 hover:bg-green-800">
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Publish Listing
+              </Button>
             </div>
-
-            <Button type="submit" className="w-full h-12 text-lg" disabled={isSubmitting}>
-              {isSubmitting ? "Uploading..." : "Submit Listing"}
-            </Button>
           </form>
         </CardContent>
       </Card>

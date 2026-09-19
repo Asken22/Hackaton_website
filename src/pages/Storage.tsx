@@ -50,9 +50,12 @@ export function Storage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div className="space-y-2">
           <p className="text-sm font-semibold tracking-wider text-green-600 uppercase">Fulfilment</p>
-          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">Storage Solutions</h1>
+          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Warehouse & Cold Storage</h1>
           <p className="text-muted-foreground text-lg">Find secure and verified warehousing across Maharashtra to safely store your produce.</p>
         </div>
+        <button className="bg-green-700 text-white hover:bg-green-800 px-6 py-3 rounded-full font-medium shadow-sm transition-colors">
+          Find Nearby Warehouses
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -96,12 +99,14 @@ export function Storage() {
               <div className="pt-4 border-t space-y-4">
                 <div className="flex flex-wrap gap-2">
                   {storage.features.map(f => (
-                    <span key={f} className="text-[10px] uppercase tracking-wider font-semibold bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">
+                    <span key={f} className="text-[10px] uppercase tracking-wider font-semibold bg-gray-100 text-gray-600 px-2 py-1 rounded">
                       {f}
                     </span>
                   ))}
                 </div>
-                
+                <button className="w-full bg-green-50 text-green-700 hover:bg-green-100 py-2 rounded-md font-medium text-sm transition-colors">
+                  View Details
+                </button>
               </div>
             </CardContent>
           </Card>
