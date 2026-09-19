@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowUpRight, TrendingUp, IndianRupee, Wheat, BellRing, ChevronRight } from "lucide-react"
+import { ArrowUpRight, TrendingUp, IndianRupee, Wheat, BellRing } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
@@ -81,8 +81,8 @@ export function Dashboard() {
         </Card>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-7">
-        <Card className="md:col-span-4 glass">
+      <div className="grid gap-6 md:grid-cols-1">
+        <Card className="glass">
           <CardHeader>
             <CardTitle>Price Trend (Wheat)</CardTitle>
             <CardDescription>Historical market prices over the last 7 days</CardDescription>
@@ -99,34 +99,6 @@ export function Dashboard() {
                 <Line type="monotone" dataKey="price" stroke="#16a34a" strokeWidth={3} dot={{ r: 4, fill: '#16a34a' }} activeDot={{ r: 6 }} />
               </LineChart>
             </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card className="md:col-span-3 glass">
-          <CardHeader>
-            <CardTitle>Recent Transactions</CardTitle>
-            <CardDescription>Your latest accepted offers and deliveries</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0">
-                  <div className="flex flex-col">
-                    <span className="font-medium">ITC Agro Ltd.</span>
-                    <span className="text-sm text-muted-foreground">Wheat • 20 Qtl</span>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    <span className="font-bold text-green-600">₹46,000</span>
-                    <span className="text-xs text-muted-foreground flex items-center">
-                      Payment Pending <ChevronRight className="h-3 w-3 ml-1" />
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <Button variant="ghost" className="w-full mt-4" asChild>
-              <Link to="/transactions">View All Transactions</Link>
-            </Button>
           </CardContent>
         </Card>
       </div>
