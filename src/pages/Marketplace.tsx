@@ -5,6 +5,10 @@ import { Button } from "@/components/ui/button"
 import { mockDB } from "@/lib/mockDatabase"
 import type { Listing } from "@/lib/mockDatabase"
 import { useUser } from "@/contexts/UserContext"
+import riceImg from "@/assets/rice.jpg"
+import wheatImg from "@/assets/wheat.jpg"
+import soybeanImg from "@/assets/soybean.jpg"
+import maizeImg from "@/assets/maize.jpg"
 
 export function Marketplace() {
   const { userId, userName } = useUser()
@@ -66,8 +70,18 @@ export function Marketplace() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {listings.map(listing => (
           <Card key={listing.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
-            <div className="bg-gray-100 aspect-video flex items-center justify-center text-gray-400 relative">
-              [Image Placeholder]
+            <div className="bg-gray-100 aspect-video relative overflow-hidden">
+              <img 
+                src={
+                  listing.crop.toLowerCase().includes('rice') ? riceImg :
+                  listing.crop.toLowerCase().includes('wheat') ? wheatImg :
+                  listing.crop.toLowerCase().includes('soybean') ? soybeanImg :
+                  listing.crop.toLowerCase().includes('maize') ? maizeImg :
+                  wheatImg
+                } 
+                alt={listing.crop}
+                className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+              />
               {listing.verificationStatus !== 'None' && (
                 <div className="absolute top-2 right-2 bg-white/90 px-2 py-1 rounded-md text-xs font-bold text-green-700 flex items-center gap-1 shadow-sm">
                   <ShieldCheck className="h-3 w-3" /> {listing.verificationStatus}

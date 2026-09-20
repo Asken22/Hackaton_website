@@ -4,6 +4,10 @@ import { Card, CardContent } from "@/components/ui/card"
 import { mockDB } from "@/lib/mockDatabase"
 import type { Listing } from "@/lib/mockDatabase"
 import { useUser } from "@/contexts/UserContext"
+import riceImg from "@/assets/rice.jpg"
+import wheatImg from "@/assets/wheat.jpg"
+import soybeanImg from "@/assets/soybean.jpg"
+import maizeImg from "@/assets/maize.jpg"
 
 export function MyListings() {
   const { userId } = useUser()
@@ -23,8 +27,18 @@ export function MyListings() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {listings.map(listing => (
           <Card key={listing.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="bg-gray-100 aspect-video flex items-center justify-center text-gray-400 font-medium">
-              [Image Placeholder]
+            <div className="bg-gray-100 aspect-video relative overflow-hidden">
+              <img 
+                src={
+                  listing.crop.toLowerCase().includes('rice') ? riceImg :
+                  listing.crop.toLowerCase().includes('wheat') ? wheatImg :
+                  listing.crop.toLowerCase().includes('soybean') ? soybeanImg :
+                  listing.crop.toLowerCase().includes('maize') ? maizeImg :
+                  wheatImg
+                } 
+                alt={listing.crop}
+                className="object-cover w-full h-full"
+              />
             </div>
             <CardContent className="p-4 space-y-4">
               <div className="flex justify-between items-start">
