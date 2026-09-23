@@ -22,11 +22,11 @@ export function Dashboard() {
           <h1 className="text-3xl font-bold tracking-tight">Farmer Dashboard</h1>
           <p className="text-muted-foreground">Welcome back, Ramesh! Here is your market overview.</p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" asChild>
+        <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-2">
+          <Button variant="outline" className="w-full sm:w-auto" asChild>
             <Link to="/marketplace">View Marketplace</Link>
           </Button>
-          <Button asChild>
+          <Button className="w-full sm:w-auto" asChild>
             <Link to="/upload">Upload Produce</Link>
           </Button>
         </div>

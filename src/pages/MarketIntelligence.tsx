@@ -27,11 +27,11 @@ export function MarketIntelligence() {
 
       {/* Selectors */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div className="flex gap-3">
-          <button className="flex items-center justify-between gap-2 px-4 py-2 bg-white border rounded-md shadow-sm text-sm font-medium hover:bg-gray-50">
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <button className="w-full sm:w-auto flex items-center justify-between gap-2 px-4 py-2 bg-white border rounded-md shadow-sm text-sm font-medium hover:bg-gray-50">
             Basmati Rice <ChevronDown className="h-4 w-4 text-gray-500" />
           </button>
-          <button className="flex items-center justify-between gap-2 px-4 py-2 bg-white border rounded-md shadow-sm text-sm font-medium hover:bg-gray-50">
+          <button className="w-full sm:w-auto flex items-center justify-between gap-2 px-4 py-2 bg-white border rounded-md shadow-sm text-sm font-medium hover:bg-gray-50">
             Karnal district <ChevronDown className="h-4 w-4 text-gray-500" />
           </button>
         </div>
@@ -134,7 +134,7 @@ export function MarketIntelligence() {
               <p className="text-blue-700">Book government-verified transport to the selected mandi seamlessly.</p>
             </div>
           </div>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white shrink-0">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white shrink-0 w-full md:w-auto mt-4 md:mt-0">
             Continue with Kisan Rath <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </motion.div>

@@ -38,7 +38,13 @@ const roleNavItems = {
   ]
 }
 
-export function Sidebar() {
+export function Sidebar({ 
+  mobileOpen = false, 
+  setMobileOpen = () => {} 
+}: { 
+  mobileOpen?: boolean, 
+  setMobileOpen?: (val: boolean) => void 
+}) {
   const location = useLocation()
   const navigate = useNavigate()
   const { role, setRole, userName } = useUser()
@@ -51,7 +57,18 @@ export function Sidebar() {
   }
 
   return (
-    <nav className="w-64 border-r bg-card hidden md:flex flex-col shrink-0 min-h-screen">
+    <>
+      {/* Mobile Overlay */}
+      {mobileOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+      <nav className={cn(
+        "fixed inset-y-0 left-0 z-50 w-64 border-r bg-card flex flex-col shrink-0 min-h-screen transition-transform duration-300 md:static md:translate-x-0",
+        mobileOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
       <div className="p-6">
         <h2 className="text-2xl font-bold text-primary flex items-center gap-2">
           <Warehouse className="h-6 w-6" />
@@ -72,6 +89,7 @@ export function Sidebar() {
             <Link
               key={item.href}
               to={item.href}
+              onClick={() => setMobileOpen(false)}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
                 isActive 
@@ -107,5 +125,6 @@ export function Sidebar() {
         </div>
       )}
     </nav>
+    </>
   )
 }

@@ -47,7 +47,7 @@ export function LotCreation() {
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Virtual Lots</h1>
           <p className="text-muted-foreground text-lg">Combine your harvest with nearby farmers to sell to institutional buyers.</p>
         </div>
-        <Button className="bg-green-700 hover:bg-green-800" onClick={createLot}>
+        <Button className="w-full sm:w-auto bg-green-700 hover:bg-green-800" onClick={createLot}>
           <Plus className="mr-2 h-4 w-4" /> Create New Lot
         </Button>
       </div>
