@@ -15,6 +15,7 @@ import { Offers } from "./pages/Offers"
 import { Marketplace } from "./pages/Marketplace"
 import { FPODashboard } from "./pages/fpo/FPODashboard"
 import { Profile } from "./pages/Profile"
+import { Notifications } from "./pages/Notifications"
 
 // Placeholders for new pages
 const Placeholder = ({ title }: { title: string }) => <div className="p-10 text-2xl font-bold">{title}</div>
@@ -42,7 +43,7 @@ function App() {
           <Route path="listings" element={<MyListings />} />
           <Route path="lots" element={<LotCreation />} />
           <Route path="bids" element={<Offers />} />
-          <Route path="notifications" element={<Placeholder title="Notifications" />} />
+          <Route path="notifications" element={<Notifications />} />
           <Route path="profile" element={<Profile />} />
         </Route>
 
@@ -54,7 +55,7 @@ function App() {
           <Route path="recommended" element={<Placeholder title="Recommended Listings" />} />
           <Route path="bids" element={<Placeholder title="My Bids" />} />
           <Route path="orders" element={<Placeholder title="Orders" />} />
-          <Route path="notifications" element={<Placeholder title="Notifications" />} />
+          <Route path="notifications" element={<Notifications />} />
           <Route path="profile" element={<Profile />} />
         </Route>
 
