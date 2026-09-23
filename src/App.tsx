@@ -15,6 +15,7 @@ import { Offers } from "./pages/Offers"
 import { Marketplace } from "./pages/Marketplace"
 import { FPODashboard } from "./pages/fpo/FPODashboard"
 import { QualityVerification } from "./pages/farmer/QualityVerification"
+import { Profile } from "./pages/Profile"
 
 // Placeholders for new pages
 const Placeholder = ({ title }: { title: string }) => <div className="p-10 text-2xl font-bold">{title}</div>
@@ -44,7 +45,7 @@ function App() {
           <Route path="lots" element={<LotCreation />} />
           <Route path="bids" element={<Offers />} />
           <Route path="notifications" element={<Placeholder title="Notifications" />} />
-          <Route path="profile" element={<Placeholder title="Profile" />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
 
         {/* Buyer Routes */}
@@ -56,7 +57,7 @@ function App() {
           <Route path="bids" element={<Placeholder title="My Bids" />} />
           <Route path="orders" element={<Placeholder title="Orders" />} />
           <Route path="notifications" element={<Placeholder title="Notifications" />} />
-          <Route path="profile" element={<Placeholder title="Profile" />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
 
         {/* FPO Routes */}
@@ -64,7 +65,7 @@ function App() {
           <Route path="dashboard" element={<Placeholder title="FPO Dashboard" />} />
           <Route path="verifications" element={<FPODashboard />} />
           <Route path="completed" element={<Placeholder title="Completed Verifications" />} />
-          <Route path="profile" element={<Placeholder title="Profile" />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
         
         <Route path="*" element={<Navigate to="/" replace />} />
