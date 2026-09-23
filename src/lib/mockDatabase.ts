@@ -14,7 +14,13 @@ export interface Listing {
   description: string;
   images: string[];
   location: string;
-  verificationStatus: VerificationStatus;
+  
+  verificationType: 'Self' | 'FPO' | 'AGMARK';
+  qualityScore?: number;
+  grade?: 'A' | 'B' | 'C';
+  qualityParams?: Record<string, number | string>;
+  agmarkData?: any;
+
   createdAt: string;
 }
 
@@ -71,7 +77,17 @@ const demoListings: Listing[] = [
     description: "Premium quality long-grain basmati.",
     images: [],
     location: "Karnal, Haryana",
-    verificationStatus: 'FPO Verified',
+    verificationType: 'AGMARK',
+    agmarkData: {
+      certificateNumber: "AG-12345678",
+      holder: "Ramesh Kumar",
+      commodity: "Basmati Rice",
+      grade: "Grade A",
+      lab: "National Quality Lab, Delhi",
+      date: "2024-05-12",
+      expiry: "2024-11-12",
+      status: "Active"
+    },
     createdAt: new Date().toISOString()
   },
   {
@@ -85,7 +101,28 @@ const demoListings: Listing[] = [
     description: "Dry and clean wheat ready for transport.",
     images: [],
     location: "Pune, Maharashtra",
-    verificationStatus: 'Self Verified',
+    verificationType: 'FPO',
+    qualityScore: 92,
+    grade: 'A',
+    qualityParams: {
+      "Moisture (%)": 10,
+      "Damage (%)": 1,
+      "Foreign Matter (%)": 0.5
+    },
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "lst_3",
+    farmerId: "f3",
+    farmerName: "Suresh Patel",
+    crop: "Soybean",
+    quantity: 80,
+    expectedPrice: 4200,
+    harvestDate: "2024-05-01",
+    description: "High oil content soybean.",
+    images: [],
+    location: "Indore, MP",
+    verificationType: 'Self',
     createdAt: new Date().toISOString()
   }
 ];

@@ -14,7 +14,6 @@ const roleNavItems = {
     { title: "Warehouses", href: "/farmer/warehouses", icon: Warehouse },
     { title: "Create Listing", href: "/farmer/create-listing", icon: PackagePlus },
     { title: "My Listings", href: "/farmer/listings", icon: List },
-    { title: "Quality Verification", href: "/farmer/verification", icon: CheckSquare },
     { title: "Virtual Lots", href: "/farmer/lots", icon: Truck }, // Repurposing Truck icon
     { title: "Buyer Bids", href: "/farmer/bids", icon: Send },
     { title: "Notifications", href: "/farmer/notifications", icon: Bell },

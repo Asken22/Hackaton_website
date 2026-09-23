@@ -14,7 +14,6 @@ import { LotCreation } from "./pages/LotCreation"
 import { Offers } from "./pages/Offers"
 import { Marketplace } from "./pages/Marketplace"
 import { FPODashboard } from "./pages/fpo/FPODashboard"
-import { QualityVerification } from "./pages/farmer/QualityVerification"
 import { Profile } from "./pages/Profile"
 
 // Placeholders for new pages
@@ -41,7 +40,6 @@ function App() {
           <Route path="warehouses" element={<Storage />} />
           <Route path="create-listing" element={<UploadProduce />} />
           <Route path="listings" element={<MyListings />} />
-          <Route path="verification" element={<QualityVerification />} />
           <Route path="lots" element={<LotCreation />} />
           <Route path="bids" element={<Offers />} />
           <Route path="notifications" element={<Placeholder title="Notifications" />} />

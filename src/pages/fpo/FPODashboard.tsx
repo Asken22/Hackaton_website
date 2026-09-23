@@ -24,7 +24,7 @@ export function FPODashboard() {
   const handleAction = (reqId: string, listingId: string, status: 'Approved' | 'Rejected') => {
     mockDB.updateVerificationRequestStatus(reqId, status)
     if (status === 'Approved') {
-      mockDB.updateListing(listingId, { verificationStatus: 'FPO Verified' })
+      mockDB.updateListing(listingId, { verificationType: 'FPO', grade: 'A', qualityScore: 95 })
     }
     fetchRequests()
   }

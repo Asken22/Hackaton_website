@@ -82,11 +82,28 @@ export function Marketplace() {
                 alt={listing.crop}
                 className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
               />
-              {listing.verificationStatus !== 'None' && (
-                <div className="absolute top-2 right-2 bg-white/90 px-2 py-1 rounded-md text-xs font-bold text-green-700 flex items-center gap-1 shadow-sm">
-                  <ShieldCheck className="h-3 w-3" /> {listing.verificationStatus}
-                </div>
-              )}
+              <div className="absolute top-2 right-2 flex flex-col gap-1 items-end">
+                {listing.verificationType === 'AGMARK' && (
+                  <div title="Verified via Government Records" className="bg-green-100 border border-green-300 px-2 py-1 rounded-md text-xs font-bold text-green-800 flex items-center gap-1 shadow-sm cursor-help">
+                    <ShieldCheck className="h-3 w-3" /> AGMARK Certified
+                  </div>
+                )}
+                {listing.verificationType === 'FPO' && (
+                  <>
+                    <div title={`Rule-based Grading. Score: ${listing.qualityScore}%`} className="bg-orange-100 border border-orange-300 px-2 py-1 rounded-md text-xs font-bold text-orange-800 flex items-center gap-1 shadow-sm cursor-help">
+                      <ShieldCheck className="h-3 w-3" /> FPO Grade {listing.grade}
+                    </div>
+                    <div className="bg-white/90 px-2 py-0.5 rounded text-[10px] font-bold text-gray-600 shadow-sm">
+                      Score: {listing.qualityScore}%
+                    </div>
+                  </>
+                )}
+                {listing.verificationType === 'Self' && (
+                  <div title="Parameters declared by farmer" className="bg-blue-100 border border-blue-300 px-2 py-1 rounded-md text-xs font-bold text-blue-800 flex items-center gap-1 shadow-sm cursor-help">
+                    <ShieldCheck className="h-3 w-3" /> Self Verified
+                  </div>
+                )}
+              </div>
             </div>
             <CardContent className="p-4 space-y-4">
               <div className="flex justify-between items-start">
