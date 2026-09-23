@@ -13,6 +13,104 @@ import wheatImg from "@/assets/wheat.jpg"
 import soybeanImg from "@/assets/soybean.jpg"
 import maizeImg from "@/assets/maize.jpg"
 
+// -----------------------------------------------------------------
+// DYNAMIC CROP CONFIGURATIONS
+// -----------------------------------------------------------------
+type ScoringType = 'higher' | 'lower' | 'ideal';
+
+interface QualityParamDef {
+  id: string;
+  label: string;
+  min: number;
+  max: number;
+  default: number;
+  weight: number;
+  scoring: ScoringType;
+  ideal?: number;
+}
+
+interface CropConfig {
+  params: QualityParamDef[];
+  getExplanations: (values: Record<string, number>) => string[];
+}
+
+const CROP_CONFIGS: Record<string, CropConfig> = {
+  'Rice': {
+    params: [
+      { id: 'moisture', label: 'Moisture Content (%)', min: 0, max: 25, default: 12, weight: 0.20, scoring: 'ideal', ideal: 12 },
+      { id: 'broken', label: 'Broken Grains (%)', min: 0, max: 20, default: 2, weight: 0.20, scoring: 'lower' },
+      { id: 'foreign', label: 'Foreign Matter (%)', min: 0, max: 10, default: 1, weight: 0.15, scoring: 'lower' },
+      { id: 'damaged', label: 'Damaged Grains (%)', min: 0, max: 15, default: 2, weight: 0.15, scoring: 'lower' },
+      { id: 'uniformity', label: 'Grain Uniformity (%)', min: 0, max: 100, default: 90, weight: 0.15, scoring: 'higher' },
+      { id: 'color', label: 'Grain Color (0-100)', min: 0, max: 100, default: 90, weight: 0.10, scoring: 'higher' },
+      { id: 'pest', label: 'Pest / Insect Damage (%)', min: 0, max: 10, default: 0, weight: 0.05, scoring: 'lower' },
+    ],
+    getExplanations: (v) => [
+      v.moisture >= 10 && v.moisture <= 14 ? '✔ Moisture within ideal range' : '❌ Moisture outside ideal range',
+      v.broken < 5 ? '✔ Broken grains below acceptable limit' : '❌ High broken grains',
+      v.uniformity > 85 ? '✔ High grain uniformity' : '❌ Poor grain uniformity',
+      v.pest === 0 ? '✔ No pest damage' : '❌ Pest damage detected',
+      v.foreign < 2 ? '✔ Very low foreign matter' : '❌ High foreign matter'
+    ]
+  },
+  'Orange': {
+    params: [
+      { id: 'color', label: 'Color Uniformity (0-100)', min: 0, max: 100, default: 90, weight: 0.15, scoring: 'higher' },
+      { id: 'size', label: 'Fruit Size (mm)', min: 40, max: 120, default: 75, weight: 0.15, scoring: 'higher' },
+      { id: 'weight', label: 'Fruit Weight (g)', min: 50, max: 250, default: 150, weight: 0.10, scoring: 'higher' },
+      { id: 'peel', label: 'Peel Quality (0-100)', min: 0, max: 100, default: 90, weight: 0.15, scoring: 'higher' },
+      { id: 'firmness', label: 'Firmness (0-100)', min: 0, max: 100, default: 85, weight: 0.15, scoring: 'higher' },
+      { id: 'juice', label: 'Juice Content (%)', min: 0, max: 70, default: 45, weight: 0.10, scoring: 'higher' },
+      { id: 'brix', label: 'Brix (Sweetness %)', min: 0, max: 25, default: 12, weight: 0.10, scoring: 'higher' },
+      { id: 'damage', label: 'Surface Damage (%)', min: 0, max: 30, default: 2, weight: 0.05, scoring: 'lower' },
+      { id: 'pest', label: 'Disease / Pest Damage (%)', min: 0, max: 20, default: 0, weight: 0.05, scoring: 'lower' },
+    ],
+    getExplanations: (v) => [
+      v.color > 85 ? '✔ Uniform bright orange color' : '❌ Uneven color',
+      v.peel > 80 ? '✔ Excellent peel quality' : '❌ Poor peel quality',
+      v.juice > 40 ? '✔ High juice content' : '❌ Low juice content',
+      v.brix >= 11 ? '✔ High sweetness level' : '❌ Low sweetness',
+      v.pest === 0 && v.damage < 5 ? '✔ No disease or major damage detected' : '❌ Damage/Disease detected'
+    ]
+  },
+  'Banana': {
+    params: [
+      { id: 'length', label: 'Finger Length (cm)', min: 5, max: 35, default: 20, weight: 0.15, scoring: 'higher' },
+      { id: 'weight', label: 'Average Weight (g)', min: 50, max: 200, default: 120, weight: 0.10, scoring: 'higher' },
+      { id: 'ripeness', label: 'Ripeness (0-100)', min: 0, max: 100, default: 80, weight: 0.15, scoring: 'ideal', ideal: 80 },
+      { id: 'color', label: 'Peel Color (0-100)', min: 0, max: 100, default: 90, weight: 0.15, scoring: 'higher' },
+      { id: 'bruising', label: 'Bruising (%)', min: 0, max: 30, default: 5, weight: 0.15, scoring: 'lower' },
+      { id: 'firmness', label: 'Firmness (0-100)', min: 0, max: 100, default: 80, weight: 0.15, scoring: 'higher' },
+      { id: 'uniformity', label: 'Uniformity of Bunch (0-100)', min: 0, max: 100, default: 85, weight: 0.10, scoring: 'higher' },
+      { id: 'pest', label: 'Disease / Pest Damage (%)', min: 0, max: 20, default: 0, weight: 0.05, scoring: 'lower' },
+    ],
+    getExplanations: (v) => [
+      v.length >= 18 && v.uniformity > 80 ? '✔ Uniform fruit size' : '❌ Irregular size',
+      v.color > 80 ? '✔ Good peel color' : '❌ Poor peel color',
+      v.bruising > 0 && v.bruising <= 5 ? '✔ Slight bruising detected' : v.bruising === 0 ? '✔ No bruising' : '❌ Heavy bruising',
+      v.firmness > 75 ? '✔ Good firmness' : '❌ Soft/Overripe',
+      v.pest === 0 ? '✔ No pest damage' : '❌ Pest damage detected'
+    ]
+  },
+  'Generic': {
+    params: [
+      { id: 'color', label: 'Color Quality (0-100)', min: 0, max: 100, default: 80, weight: 0.3, scoring: 'higher' },
+      { id: 'sizeUniformity', label: 'Size Uniformity (0-100)', min: 0, max: 100, default: 80, weight: 0.3, scoring: 'higher' },
+      { id: 'damage', label: 'Damage Percentage (%)', min: 0, max: 20, default: 2, weight: 0.3, scoring: 'lower' },
+      { id: 'moisture', label: 'Moisture (%)', min: 5, max: 25, default: 12, weight: 0.1, scoring: 'ideal', ideal: 12 },
+    ],
+    getExplanations: (v) => [
+      v.color >= 80 ? '✔ Excellent Color' : '❌ Fair Color',
+      v.damage < 5 ? `✔ Damage below 5%` : '❌ High Damage',
+      Math.abs(12 - v.moisture) < 3 ? '✔ Moisture within range' : '❌ Moisture out of range'
+    ]
+  }
+}
+
+// -----------------------------------------------------------------
+// COMPONENT
+// -----------------------------------------------------------------
+
 export function UploadProduce() {
   const navigate = useNavigate()
   const { userId, userName } = useUser()
@@ -20,7 +118,7 @@ export function UploadProduce() {
   const [agmarkLoading, setAgmarkLoading] = useState(false)
   
   const [formData, setFormData] = useState({
-    crop: 'Wheat (Lokwan)',
+    crop: 'Rice',
     quantity: '',
     expectedPrice: '',
     harvestDate: '',
@@ -31,13 +129,8 @@ export function UploadProduce() {
   // Verification State
   const [verificationType, setVerificationType] = useState<'Self' | 'FPO' | 'AGMARK'>('Self')
   
-  // FPO State
-  const [qualityParams, setQualityParams] = useState({
-    color: 80,
-    sizeUniformity: 80,
-    damage: 2,
-    moisture: 12,
-  })
+  // Dynamic FPO State
+  const [qualityParams, setQualityParams] = useState<Record<string, number>>({})
   
   // AGMARK State
   const [certNumber, setCertNumber] = useState("")
@@ -46,27 +139,48 @@ export function UploadProduce() {
   // Derived FPO Grade & Score
   const [score, setScore] = useState(0)
   const [grade, setGrade] = useState<'A' | 'B' | 'C'>('C')
+  const [explanations, setExplanations] = useState<string[]>([])
 
-  // Calculate Grade when FPO params change
+  // Re-initialize parameters when crop changes
+  useEffect(() => {
+    const config = CROP_CONFIGS[formData.crop] || CROP_CONFIGS['Generic']
+    const initialParams: Record<string, number> = {}
+    config.params.forEach(p => initialParams[p.id] = p.default)
+    setQualityParams(initialParams)
+  }, [formData.crop])
+
+  // Calculate Grade when parameters change
   useEffect(() => {
     if (verificationType !== 'FPO') return
-    // Simple mock grading algorithm
-    // Color (0-100), Size (0-100), Damage (0-100, lower is better), Moisture (0-100, ideal ~10-14)
-    const colorScore = qualityParams.color * 0.3
-    const sizeScore = qualityParams.sizeUniformity * 0.3
-    const damageScore = Math.max(0, (100 - (qualityParams.damage * 10))) * 0.3
+    const config = CROP_CONFIGS[formData.crop] || CROP_CONFIGS['Generic']
     
-    // Moisture: ideal is 12. Too high or too low reduces score
-    const moistureDiff = Math.abs(12 - qualityParams.moisture)
-    const moistureScore = Math.max(0, 100 - (moistureDiff * 10)) * 0.1
+    let totalScore = 0
+    config.params.forEach(p => {
+      const val = qualityParams[p.id] || 0
+      let paramScore = 0
+      
+      if (p.scoring === 'higher') {
+        paramScore = (val / p.max) * 100
+      } else if (p.scoring === 'lower') {
+        paramScore = Math.max(0, 100 - ((val / p.max) * 100))
+      } else if (p.scoring === 'ideal' && p.ideal !== undefined) {
+        const diff = Math.abs(p.ideal - val)
+        const maxDiff = Math.max(Math.abs(p.ideal - p.min), Math.abs(p.max - p.ideal))
+        paramScore = Math.max(0, 100 - ((diff / maxDiff) * 100))
+      }
+      
+      totalScore += paramScore * p.weight
+    })
 
-    const totalScore = Math.round(colorScore + sizeScore + damageScore + moistureScore)
-    setScore(totalScore)
+    const finalScore = Math.round(totalScore)
+    setScore(finalScore)
 
-    if (totalScore >= 90) setGrade('A')
-    else if (totalScore >= 70) setGrade('B')
+    if (finalScore >= 90) setGrade('A')
+    else if (finalScore >= 75) setGrade('B')
     else setGrade('C')
-  }, [qualityParams, verificationType])
+
+    setExplanations(config.getExplanations(qualityParams))
+  }, [qualityParams, verificationType, formData.crop])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -79,7 +193,6 @@ export function UploadProduce() {
   const fetchAgmark = () => {
     if (!certNumber) return
     setAgmarkLoading(true)
-    // Simulate API Call
     setTimeout(() => {
       setAgmarkData({
         certificateNumber: certNumber,
@@ -129,14 +242,15 @@ export function UploadProduce() {
     }, 800)
   }
 
-  // Preview Image Logic
   const getPreviewImage = () => {
     const cropStr = formData.crop.toLowerCase()
     if (cropStr.includes('rice')) return riceImg
     if (cropStr.includes('soybean')) return soybeanImg
     if (cropStr.includes('maize')) return maizeImg
-    return wheatImg
+    return wheatImg // Generic fallback
   }
+
+  const currentConfig = CROP_CONFIGS[formData.crop] || CROP_CONFIGS['Generic']
 
   return (
     <div className="max-w-7xl mx-auto pb-10 space-y-6">
@@ -164,11 +278,14 @@ export function UploadProduce() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Crop Type</label>
-                    <select name="crop" required value={formData.crop} onChange={handleChange} className="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">
-                      <option value="Basmati Rice">Basmati Rice</option>
-                      <option value="Wheat (Lokwan)">Wheat (Lokwan)</option>
+                    <select name="crop" required value={formData.crop} onChange={handleChange} className="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 bg-white">
+                      <option value="Rice">Rice</option>
+                      <option value="Orange">Orange</option>
+                      <option value="Banana">Banana</option>
+                      <option value="Tomato">Tomato</option>
+                      <option value="Onion">Onion</option>
+                      <option value="Wheat">Wheat</option>
                       <option value="Soybean">Soybean</option>
-                      <option value="Maize">Maize</option>
                     </select>
                   </div>
                   <div className="space-y-2">
@@ -259,32 +376,34 @@ export function UploadProduce() {
                       <div className="bg-orange-100/50 p-4 rounded-lg border border-orange-200 flex gap-3">
                         <AlertCircle className="h-5 w-5 text-orange-600 shrink-0 mt-0.5" />
                         <div className="text-sm text-orange-900">
-                          <strong>Demo Mode:</strong> For this hackathon demo, you (the farmer) will simulate the FPO inspector by adjusting the parameters below. Watch the live grade calculation!
+                          <strong>Dynamic Config ({formData.crop}):</strong> The fields and scoring rules below have dynamically changed to match the standards for {formData.crop}. Adjust the sliders to see the live rule-based grading!
                         </div>
                       </div>
                       
                       <div className="grid md:grid-cols-2 gap-6">
-                        <div className="space-y-4">
-                          <div className="space-y-1">
-                            <label className="text-xs font-medium text-gray-500 flex justify-between">Color Quality <span>{qualityParams.color}/100</span></label>
-                            <input type="range" name="color" min="0" max="100" value={qualityParams.color} onChange={handleFpoParamChange} className="w-full accent-orange-600"/>
-                          </div>
-                          <div className="space-y-1">
-                            <label className="text-xs font-medium text-gray-500 flex justify-between">Size Uniformity <span>{qualityParams.sizeUniformity}/100</span></label>
-                            <input type="range" name="sizeUniformity" min="0" max="100" value={qualityParams.sizeUniformity} onChange={handleFpoParamChange} className="w-full accent-orange-600"/>
-                          </div>
-                          <div className="space-y-1">
-                            <label className="text-xs font-medium text-gray-500 flex justify-between">Damage Percentage <span>{qualityParams.damage}%</span></label>
-                            <input type="range" name="damage" min="0" max="20" step="0.5" value={qualityParams.damage} onChange={handleFpoParamChange} className="w-full accent-orange-600"/>
-                          </div>
-                          <div className="space-y-1">
-                            <label className="text-xs font-medium text-gray-500 flex justify-between">Moisture <span>{qualityParams.moisture}% (12% ideal)</span></label>
-                            <input type="range" name="moisture" min="5" max="25" step="0.5" value={qualityParams.moisture} onChange={handleFpoParamChange} className="w-full accent-orange-600"/>
-                          </div>
+                        <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                          {currentConfig.params.map(param => (
+                            <div key={param.id} className="space-y-1">
+                              <label className="text-xs font-medium text-gray-500 flex justify-between">
+                                {param.label} 
+                                <span>{qualityParams[param.id] ?? param.default}</span>
+                              </label>
+                              <input 
+                                type="range" 
+                                name={param.id} 
+                                min={param.min} 
+                                max={param.max} 
+                                step={param.max <= 20 ? 0.5 : 1}
+                                value={qualityParams[param.id] ?? param.default} 
+                                onChange={handleFpoParamChange} 
+                                className="w-full accent-orange-600"
+                              />
+                            </div>
+                          ))}
                         </div>
 
                         {/* Grading Summary Box */}
-                        <div className="bg-white border rounded-xl p-5 shadow-sm flex flex-col justify-center items-center text-center space-y-4 relative overflow-hidden">
+                        <div className="bg-white border rounded-xl p-5 shadow-sm flex flex-col justify-center items-center text-center space-y-4 relative overflow-hidden h-fit sticky top-0">
                           <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-400 to-green-500" />
                           <div>
                             <p className="text-sm text-gray-500 font-medium mb-1">Overall Quality Score</p>
@@ -300,10 +419,12 @@ export function UploadProduce() {
                           </div>
 
                           <div className="w-full text-left space-y-1 mt-2 border-t pt-3">
-                            <p className="text-xs text-gray-500 font-semibold uppercase">Rule-Based Analysis</p>
-                            <p className="text-sm text-green-700 flex items-center gap-1"><Check className="h-3 w-3"/> {qualityParams.color >= 80 ? 'Excellent' : 'Fair'} Color</p>
-                            <p className="text-sm text-green-700 flex items-center gap-1"><Check className="h-3 w-3"/> Damage at {qualityParams.damage}%</p>
-                            <p className="text-sm text-green-700 flex items-center gap-1"><Check className="h-3 w-3"/> Moisture variance: {Math.abs(12 - qualityParams.moisture)}%</p>
+                            <p className="text-xs text-gray-500 font-semibold uppercase mb-2">Rule-Based Explanation</p>
+                            {explanations.map((exp, idx) => (
+                              <p key={idx} className={`text-sm flex items-start gap-1 ${exp.startsWith('✔') ? 'text-green-700' : 'text-red-600'}`}>
+                                {exp}
+                              </p>
+                            ))}
                           </div>
                         </div>
                       </div>
