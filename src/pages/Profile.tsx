@@ -108,6 +108,33 @@ export function Profile() {
               </div>
             )}
 
+            {role === 'buyer' && (
+              <div className="pt-4 border-t">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <Package className="h-5 w-5 text-gray-500" /> 
+                  Company & Business Details
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Business Name</label>
+                    <input type="text" className="w-full border rounded-md px-3 py-2" defaultValue="AgroFood Processors Ltd." />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">GST Number</label>
+                    <input type="text" className="w-full border rounded-md px-3 py-2" defaultValue="27AADCB2230M1Z2" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">FSSAI License</label>
+                    <input type="text" className="w-full border rounded-md px-3 py-2" defaultValue="11520036000155" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Annual Procurement Volume (Tons)</label>
+                    <input type="text" className="w-full border rounded-md px-3 py-2" defaultValue="5000+" />
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="pt-4 border-t flex justify-end">
               <Button type="submit" className="bg-green-700 hover:bg-green-800">
                 <Save className="h-4 w-4 mr-2" /> Save Profile
