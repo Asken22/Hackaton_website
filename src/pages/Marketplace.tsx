@@ -112,10 +112,10 @@ export function Marketplace() {
 
           <div className="h-6 w-px bg-gray-300 mx-2 hidden md:block"></div>
           
-          <select className="text-sm border rounded-md px-3 py-1.5 bg-white"><option>Crop (All)</option></select>
-          <select className="text-sm border rounded-md px-3 py-1.5 bg-white"><option>Verification (All)</option></select>
-          <select className="text-sm border rounded-md px-3 py-1.5 bg-white"><option>Grade (All)</option></select>
-          <select className="text-sm border rounded-md px-3 py-1.5 bg-white"><option>State (All)</option></select>
+          <select className="text-sm border rounded-md px-3 py-1.5 bg-white w-full sm:w-auto"><option>Crop (All)</option></select>
+          <select className="text-sm border rounded-md px-3 py-1.5 bg-white w-full sm:w-auto"><option>Verification (All)</option></select>
+          <select className="text-sm border rounded-md px-3 py-1.5 bg-white w-full sm:w-auto"><option>Grade (All)</option></select>
+          <select className="text-sm border rounded-md px-3 py-1.5 bg-white w-full sm:w-auto"><option>State (All)</option></select>
         </CardContent>
       </Card>
 

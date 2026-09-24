@@ -133,7 +133,7 @@ export function BuyerLots() {
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
                       <div className="flex items-center gap-2">
                         <Package className="w-4 h-4 text-gray-400" />
                         <span>Qty: <span className="font-semibold text-gray-900">{lot.totalQuantity}</span></span>
