@@ -17,6 +17,12 @@ import { FPODashboard } from "./pages/fpo/FPODashboard"
 import { Profile } from "./pages/Profile"
 import { Notifications } from "./pages/Notifications"
 
+import { BuyerDashboard } from "./pages/buyer/BuyerDashboard"
+import { BuyerLots } from "./pages/buyer/BuyerLots"
+import { BuyerRecommended } from "./pages/buyer/BuyerRecommended"
+import { BuyerBids } from "./pages/buyer/BuyerBids"
+import { BuyerOrders } from "./pages/buyer/BuyerOrders"
+
 // Placeholders for new pages
 const Placeholder = ({ title }: { title: string }) => <div className="p-10 text-2xl font-bold">{title}</div>
 
@@ -49,12 +55,12 @@ function App() {
 
         {/* Buyer Routes */}
         <Route path="/buyer" element={<RoleRoute allowedRole="buyer"><MainLayout /></RoleRoute>}>
-          <Route path="dashboard" element={<Placeholder title="Buyer Dashboard" />} />
+          <Route path="dashboard" element={<BuyerDashboard />} />
           <Route path="browse" element={<Marketplace />} />
-          <Route path="lots" element={<Placeholder title="Browse Virtual Lots" />} />
-          <Route path="recommended" element={<Placeholder title="Recommended Listings" />} />
-          <Route path="bids" element={<Placeholder title="My Bids" />} />
-          <Route path="orders" element={<Placeholder title="Orders" />} />
+          <Route path="lots" element={<BuyerLots />} />
+          <Route path="recommended" element={<BuyerRecommended />} />
+          <Route path="bids" element={<BuyerBids />} />
+          <Route path="orders" element={<BuyerOrders />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="profile" element={<Profile />} />
         </Route>
