@@ -46,8 +46,8 @@ export function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center mb-8 flex flex-col items-center">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-md text-center mb-8 flex flex-col items-center">
         <Warehouse className="h-12 w-12 text-green-700 mb-2" />
         <h2 className="text-3xl font-extrabold text-gray-900">
           Sign in to AgriLink
@@ -61,8 +61,8 @@ export function Login() {
       </div>
 
       {!selectedRole ? (
-        <div className="sm:mx-auto sm:w-full sm:max-w-2xl px-4 sm:px-0">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="mx-auto w-full max-w-2xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             <Card 
               className="cursor-pointer hover:border-green-500 hover:shadow-lg transition-all group border-2"
               onClick={() => handleRoleSelect('farmer')}
@@ -91,7 +91,7 @@ export function Login() {
           </div>
         </div>
       ) : (
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="mx-auto w-full max-w-md">
           <Card className={`shadow-lg border-t-4 ${selectedRole === 'farmer' ? 'border-t-green-600' : 'border-t-blue-600'}`}>
             <CardHeader className="relative">
               <Button 
