@@ -170,7 +170,7 @@ export function MarketIntelligence() {
         </div>
         <div className="text-sm text-gray-500 text-right">
           <p>Last Updated</p>
-          <p className="font-bold text-gray-900">{selectedDate} • 10:35 AM</p>
+          <p className="font-bold text-gray-900">23-09-2026 • 11:00 AM</p>
         </div>
       </div>
 
