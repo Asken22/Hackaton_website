@@ -15,6 +15,10 @@ import {
   Bookmark
 } from 'lucide-react';
 
+import riceImg from "@/assets/rice.jpg"
+import wheatImg from "@/assets/wheat.jpg"
+import maizeImg from "@/assets/maize.jpg"
+
 const DUMMY_RECOMMENDATIONS = [
   {
     id: '1',
@@ -28,11 +32,11 @@ const DUMMY_RECOMMENDATIONS = [
     sellerLocation: 'Punjab, India',
     quantityAvailable: '100 Tons',
     basePrice: 2200,
-    image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&q=80&w=300&h=200'
+    image: wheatImg
   },
   {
     id: '2',
-    crop: 'Organic Tomatoes',
+    crop: 'Organic Maize',
     matchScore: 95,
     reason: 'Nearby Sellers',
     priceDifference: 50,
@@ -42,7 +46,7 @@ const DUMMY_RECOMMENDATIONS = [
     sellerLocation: 'Local (15km away)',
     quantityAvailable: '5 Tons',
     basePrice: 1200,
-    image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=300&h=200'
+    image: maizeImg
   },
   {
     id: '3',
@@ -56,7 +60,7 @@ const DUMMY_RECOMMENDATIONS = [
     sellerLocation: 'Haryana, India',
     quantityAvailable: '50 Tons',
     basePrice: 3500,
-    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=300&h=200'
+    image: riceImg
   }
 ];
 
